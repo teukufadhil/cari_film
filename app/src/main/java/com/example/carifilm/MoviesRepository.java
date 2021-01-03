@@ -1,5 +1,7 @@
 package com.example.carifilm;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import retrofit2.Call;
@@ -9,8 +11,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesRepository {
+
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
     private static final String LANGUAGE = "en-US";
+    public static final String TMDB_API_KEY = "be68d6f8a64c9ed20888160c598485cf";
+    public static final String POPULAR = "popular";
+    public static final String TOP_RATED = "top_rated";
+    public static final String UPCOMING = "upcoming";
 
     private static MoviesRepository repository;
 
@@ -33,27 +40,65 @@ public class MoviesRepository {
         return repository;
     }
 
-    public void getMovies(final OnGetMoviesCallback callback) {
-        api.getPopularMovies("be68d6f8a64c9ed20888160c598485cf", LANGUAGE, 1)
-                    .enqueue(new Callback<MoviesResponse>() {
-                        @Override
-                        public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
-                            if (response.isSuccessful()) {
-                                MoviesResponse moviesResponse = response.body();
-                                if (moviesResponse != null && moviesResponse.getMovies() != null) {
-                                    callback.onSuccess(moviesResponse.getMovies());
-                                } else {
-                                    callback.onError();
-                                }
+    public void getMovies(int page, String sortBy, final OnGetMoviesCallback callback) {
+        Callback<MoviesResponse> call = new Callback<MoviesResponse>() {
+            @Override
+            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                if (response.isSuccessful()) {
+                    MoviesResponse moviesResponse = response.body();
+                    if (moviesResponse != null && moviesResponse.getMovies() != null) {
+                        callback.onSuccess(moviesResponse.getPage(), moviesResponse.getMovies());
+                    } else {
+                        callback.onError();
+                    }
+                } else {
+                    callback.onError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                callback.onError();
+            }
+        };
+        switch (sortBy) {
+            case TOP_RATED:
+                api.getTopRatedMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                        .enqueue(call);
+                break;
+            case UPCOMING:
+                api.getUpcomingMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                        .enqueue(call);
+                break;
+            case POPULAR:
+            default:
+                api.getPopularMovies(BuildConfig.TMDB_API_KEY, LANGUAGE, page)
+                        .enqueue(call);
+                break;
+        }
+    }
+
+    public void getGenres(final OnGetGenresCallback callback) {
+        api.getGenres(TMDB_API_KEY, LANGUAGE)
+                .enqueue(new Callback<GenresResponse>() {
+                    @Override
+                    public void onResponse(Call<GenresResponse> call, Response<GenresResponse> response) {
+                        if (response.isSuccessful()) {
+                            GenresResponse genresResponse = response.body();
+                            if (genresResponse != null && genresResponse.getGenres() != null) {
+                                callback.onSuccess(genresResponse.getGenres());
                             } else {
                                 callback.onError();
                             }
-                        }
-
-                        @Override
-                        public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                        } else {
                             callback.onError();
                         }
-                    });
+                    }
+
+                    @Override
+                    public void onFailure(Call<GenresResponse> call, Throwable t) {
+                        callback.onError();
+                    }
+                });
     }
 }
