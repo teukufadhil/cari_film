@@ -3,4 +3,8 @@
     <string name="popular">Popular</string>
     <string name="top_rated">Top Rated</string>
     <string name="upcoming">Upcoming</string>
+    <string name="_2018">2018</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="comedy_action">Comedy, Action</string>
+    <string name="_8_7">8.7</string>
 </resources>
