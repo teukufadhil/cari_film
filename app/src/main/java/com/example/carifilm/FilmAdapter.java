@@ -19,9 +19,11 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MovieViewHolde
 
     private List<Genre> allGenres;
     private List<Film> movies;
+    private OnMoviesClickCallback callback;
 //    private String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500";
 
-    public FilmAdapter(List<Film> movies, List<Genre> allGenres) {
+    public FilmAdapter(List<Film> movies, List<Genre> allGenres, OnMoviesClickCallback callback) {
+        this.callback = this.callback;
         this.movies = movies;
         this.allGenres = allGenres;
     }
@@ -59,6 +61,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MovieViewHolde
         TextView rating;
         TextView genres;
         ImageView poster;
+        Film movie;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
@@ -67,9 +70,16 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MovieViewHolde
             rating = itemView.findViewById(R.id.item_movie_rating);
             genres = itemView.findViewById(R.id.item_movie_genre);
             poster = itemView.findViewById(R.id.item_movie_poster);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onClick(movie);
+                }
+            });
         }
 
         public void bind(Film movie) {
+            this.movie = movie;
             releaseDate.setText(movie.getReleaseDate().split("-")[0]);
             title.setText(movie.getTitle());
             rating.setText(String.valueOf(movie.getRating()));

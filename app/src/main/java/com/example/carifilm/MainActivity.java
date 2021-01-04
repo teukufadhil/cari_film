@@ -2,9 +2,11 @@ package com.example.carifilm;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,10 +33,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         moviesRepository = MoviesRepository.getInstance();
 
         moviesList = findViewById(R.id.movies_list);
-        moviesList.setLayoutManager(new LinearLayoutManager(this));
+
+        setupOnScrollListener();
 
         getGenres();
     }
@@ -128,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int page, List<Film> movies) {
                 if (adapter == null) {
-                    adapter = new FilmAdapter(movies, movieGenres);
+                    adapter = new FilmAdapter(movies, movieGenres, callback);
                     moviesList.setAdapter(adapter);
                 } else {
                     if (page == 1) {
@@ -138,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 currentPage = page;
                 isFetchingMovies = false;
+
+                setTitle();
             }
 
             @Override
@@ -145,6 +153,29 @@ public class MainActivity extends AppCompatActivity {
                 showError();
             }
         });
+    }
+
+    OnMoviesClickCallback callback = new OnMoviesClickCallback() {
+        @Override
+        public void onClick(Film movie) {
+            Intent intent = new Intent(MainActivity.this, FilmDetail.class);
+            intent.putExtra(FilmDetail.MOVIE_ID, movie.getId());
+            startActivity(intent);
+        }
+    };
+
+    private void setTitle() {
+        switch (sortBy) {
+            case MoviesRepository.POPULAR:
+                setTitle(getString(R.string.popular));
+                break;
+            case MoviesRepository.TOP_RATED:
+                setTitle(getString(R.string.top_rated));
+                break;
+            case MoviesRepository.UPCOMING:
+                setTitle(getString(R.string.upcoming));
+                break;
+        }
     }
 
     private void showError() {
