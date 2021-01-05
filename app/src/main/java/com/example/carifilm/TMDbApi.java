@@ -37,7 +37,7 @@ public interface TMDbApi {
     @GET("movie/{movie_id}")
     Call<Film> getMovie(
             @Path("movie_id") int id,
-            @Query("api_key") String apiKEy,
+            @Query("api_key") String apiKey,
             @Query("language") String language
     );
 }

@@ -23,7 +23,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MovieViewHolde
 //    private String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500";
 
     public FilmAdapter(List<Film> movies, List<Genre> allGenres, OnMoviesClickCallback callback) {
-        this.callback = this.callback;
+        this.callback = callback;
         this.movies = movies;
         this.allGenres = allGenres;
     }
