@@ -15,6 +15,8 @@ public class MoviesRepository {
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
     private static final String LANGUAGE = "en-US";
     public static final String TMDB_API_KEY = "be68d6f8a64c9ed20888160c598485cf";
+
+    //menu
     public static final String POPULAR = "popular";
     public static final String TOP_RATED = "top_rated";
     public static final String UPCOMING = "upcoming";

@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
         sortMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                /*
-                 * Every time we sort, we need to go back to page 1
-                 */
+
+
+
                 currentPage = 1;
 
                 switch (item.getItemId()) {
@@ -179,6 +179,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError() {
-        Toast.makeText(MainActivity.this, "Please check your internet connection.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Please check internet connection.", Toast.LENGTH_SHORT).show();
     }
 }

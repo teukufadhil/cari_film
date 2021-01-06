@@ -23,8 +23,7 @@ public class FilmDetail extends AppCompatActivity {
     public static String MOVIE_ID = "movie_id";
 
     private static String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w780";
-    private static String YOUTUBE_VIDEO_URL = "http://www.youtube.com/watch?v=%s";
-    private static String YOUTUBE_THUMBNAIL_URL = "http://img.youtube.com/vi/%s/0.jpg";
+
 
     private ImageView movieBackdrop;
     private TextView movieTitle;
@@ -33,7 +32,7 @@ public class FilmDetail extends AppCompatActivity {
     private TextView movieOverviewLabel;
     private TextView movieReleaseDate;
     private RatingBar movieRating;
-    private LinearLayout movieTrailers;
+//    private LinearLayout movieTrailers;
     private LinearLayout movieReviews;
 
     private MoviesRepository moviesRepository;
@@ -73,7 +72,7 @@ public class FilmDetail extends AppCompatActivity {
         movieOverviewLabel = findViewById(R.id.summaryLabel);
         movieReleaseDate = findViewById(R.id.movieDetailsReleaseDate);
         movieRating = findViewById(R.id.movieDetailsRating);
-        movieTrailers = findViewById(R.id.movieTrailers);
+
         movieReviews = findViewById(R.id.movieReviews);
     }
 

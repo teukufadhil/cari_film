@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-
 public class Film {
     @SerializedName("id")
     @Expose
@@ -113,4 +112,5 @@ public class Film {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
+
 }
